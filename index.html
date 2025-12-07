@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <title>SGC CALCULATOR 99.97%</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- iOS APP-LIKE BEHAVIOUR -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="SGC CALC">
+    <meta name="theme-color" content="#0f172a">
+
     <style>
         * {
             box-sizing: border-box;
@@ -45,13 +52,13 @@
             outline: none;
         }
         input:focus {
-            border: 1px solid #fbbf24; /* GOLD FOCUS */
+            border: 1px solid #cbd5e1; /* SILVER FOCUS */
         }
         button {
             width: 100%;
             padding: 10px;
             border-radius: 8px;
-            background: linear-gradient(135deg, #fde68a, #fbbf24);
+            background: linear-gradient(135deg, #f8fafc, #cbd5e1); /* DIAMOND SILVER */
             border: none;
             font-size: 0.95rem;
             font-weight: bold;
@@ -60,7 +67,7 @@
             transition: 0.25s;
         }
         button:hover {
-            box-shadow: 0 0 16px #fbbf24; /* GOLD GLOW */
+            box-shadow: 0 0 16px #e2e8f0; /* DIAMOND GLOW */
         }
         button:active {
             transform: scale(0.98);
@@ -83,6 +90,12 @@
         .ok {
             color: #22c55e;
             font-weight: bold;
+        }
+        .footer {
+            margin-top: 18px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #6b7280;
         }
     </style>
 </head>
@@ -111,6 +124,8 @@
         <button id="btnByErrors">CALCULATE GAMES NEEDED</button>
         <div class="results" id="resultByErrors" style="display:none;"></div>
     </div>
+
+    <p class="footer">MADE FOR YOU ❤️</p>
 </div>
 
 <script>
@@ -125,7 +140,7 @@
     const btnByErrors = document.getElementById("btnByErrors");
     const resultByErrors = document.getElementById("resultByErrors");
 
-    // -------- CALCULATOR 1 --------
+    // CALCULATOR 1 (BY GAMES)
     btnByGames.addEventListener("click", () => {
         const games = parseInt(gamesInput.value, 10);
 
@@ -146,11 +161,10 @@
             <p>ESTIMATED SGC WITH THAT MANY MISTAKES: <strong>${sgcEst.toFixed(3)}%</strong></p>
             <p class="ok">CONCLUSION: WITH ${games} GAMES, YOU SHOULD NOT PASS ${maxErrors} MISTAKES.</p>
         `;
-
         resultByGames.scrollIntoView({ behavior: "smooth" });
     });
 
-    // -------- CALCULATOR 2 --------
+    // CALCULATOR 2 (BY ERRORS)
     btnByErrors.addEventListener("click", () => {
         const errors = parseInt(errorsInput.value, 10);
 
@@ -181,7 +195,6 @@
             <p>SGC WITH ${errors} MISTAKES IN ${minGames} GAMES: <strong>${sgc.toFixed(3)}%</strong></p>
             <p class="ok">CONCLUSION: WITH ${errors} MISTAKES, YOU SHOULD PLAY AT LEAST ${minGames} GAMES.</p>
         `;
-
         resultByErrors.scrollIntoView({ behavior: "smooth" });
     });
 </script>
