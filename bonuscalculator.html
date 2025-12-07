@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SGC CALCULATOR 99.97%</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: system-ui, sans-serif;
+        }
+        body {
+            background: #0f172a;
+            color: #e5e7eb;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            text-transform: uppercase;
+        }
+        .container {
+            max-width: 460px;
+            width: 100%;
+            background: #020617;
+            border: 1px solid #1e293b;
+            border-radius: 16px;
+            padding: 20px;
+        }
+        h1 {
+            margin-top: 0;
+            text-align: center;
+        }
+        label {
+            font-size: 0.9rem;
+        }
+        input {
+            width: 100%;
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            color: #e5e7eb;
+            font-size: 1rem;
+            padding: 10px;
+            margin-top: 4px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            outline: none;
+        }
+        input:focus {
+            border: 1px solid #fbbf24; /* GOLD FOCUS */
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #fde68a, #fbbf24);
+            border: none;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 6px;
+            transition: 0.25s;
+        }
+        button:hover {
+            box-shadow: 0 0 16px #fbbf24; /* GOLD GLOW */
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        .results {
+            margin-top: 12px;
+            padding: 10px;
+            background: #0f172a;
+            border-radius: 12px;
+            border: 1px solid #1e293b;
+            font-size: 0.9rem;
+        }
+        .section-title {
+            margin-top: 10px;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+            color: #9ca3af;
+            font-weight: bold;
+        }
+        .ok {
+            color: #22c55e;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>SGC CALCULATOR</h1>
+    <p>TARGET: <strong>99.97%</strong></p>
+
+    <!-- CALCULATOR 1: BY GAMES -->
+    <div>
+        <div class="section-title">1) HOW MANY MISTAKES CAN I HAVE?</div>
+        <label for="gamesInput">TOTAL GAMES:</label>
+        <input type="number" id="gamesInput">
+        <button id="btnByGames">CALCULATE ALLOWED MISTAKES</button>
+        <div class="results" id="resultByGames" style="display:none;"></div>
+    </div>
+
+    <hr style="margin:22px 0;border-top:1px solid #1e293b;">
+
+    <!-- CALCULATOR 2: BY ERRORS -->
+    <div>
+        <div class="section-title">2) HOW MANY GAMES DO I NEED WITH THIS MANY MISTAKES?</div>
+        <label for="errorsInput">MISTAKES:</label>
+        <input type="number" id="errorsInput">
+        <button id="btnByErrors">CALCULATE GAMES NEEDED</button>
+        <div class="results" id="resultByErrors" style="display:none;"></div>
+    </div>
+</div>
+
+<script>
+    const TARGET = 99.97;
+    const RATE = 0.0003;
+
+    const gamesInput = document.getElementById("gamesInput");
+    const btnByGames = document.getElementById("btnByGames");
+    const resultByGames = document.getElementById("resultByGames");
+
+    const errorsInput = document.getElementById("errorsInput");
+    const btnByErrors = document.getElementById("btnByErrors");
+    const resultByErrors = document.getElementById("resultByErrors");
+
+    // -------- CALCULATOR 1 --------
+    btnByGames.addEventListener("click", () => {
+        const games = parseInt(gamesInput.value, 10);
+
+        if (isNaN(games) || games <= 0) {
+            resultByGames.style.display = "block";
+            resultByGames.innerHTML = "<p style='color:red'>ENTER A VALID NUMBER OF GAMES.</p>";
+            resultByGames.scrollIntoView({ behavior: "smooth" });
+            return;
+        }
+
+        const maxErrors = Math.floor(RATE * games);
+        const sgcEst = ((games - maxErrors) / games) * 100;
+
+        resultByGames.style.display = "block";
+        resultByGames.innerHTML = `
+            <p>GAMES: <strong>${games}</strong></p>
+            <p>MAX MISTAKES TO KEEP ~${TARGET}%: <strong>${maxErrors}</strong></p>
+            <p>ESTIMATED SGC WITH THAT MANY MISTAKES: <strong>${sgcEst.toFixed(3)}%</strong></p>
+            <p class="ok">CONCLUSION: WITH ${games} GAMES, YOU SHOULD NOT PASS ${maxErrors} MISTAKES.</p>
+        `;
+
+        resultByGames.scrollIntoView({ behavior: "smooth" });
+    });
+
+    // -------- CALCULATOR 2 --------
+    btnByErrors.addEventListener("click", () => {
+        const errors = parseInt(errorsInput.value, 10);
+
+        if (isNaN(errors) || errors < 0) {
+            resultByErrors.style.display = "block";
+            resultByErrors.innerHTML = "<p style='color:red'>ENTER A VALID NUMBER OF MISTAKES.</p>";
+            resultByErrors.scrollIntoView({ behavior: "smooth" });
+            return;
+        }
+
+        if (errors === 0) {
+            resultByErrors.style.display = "block";
+            resultByErrors.innerHTML = `
+                <p>MISTAKES: <strong>0</strong></p>
+                <p>YOU CAN PLAY ANY NUMBER OF GAMES AND YOUR SGC IS 100%.</p>
+            `;
+            resultByErrors.scrollIntoView({ behavior: "smooth" });
+            return;
+        }
+
+        const minGames = Math.ceil(errors / RATE);
+        const sgc = ((minGames - errors) / minGames) * 100;
+
+        resultByErrors.style.display = "block";
+        resultByErrors.innerHTML = `
+            <p>MISTAKES: <strong>${errors}</strong></p>
+            <p>MINIMUM GAMES TO KEEP ~${TARGET}%: <strong>${minGames}</strong></p>
+            <p>SGC WITH ${errors} MISTAKES IN ${minGames} GAMES: <strong>${sgc.toFixed(3)}%</strong></p>
+            <p class="ok">CONCLUSION: WITH ${errors} MISTAKES, YOU SHOULD PLAY AT LEAST ${minGames} GAMES.</p>
+        `;
+
+        resultByErrors.scrollIntoView({ behavior: "smooth" });
+    });
+</script>
+
+</body>
+</html>
