@@ -10,6 +10,38 @@
   <meta name="theme-color" content="#0f172a">
 
   <style>
+.calendar-cell {
+  overflow: visible !important;
+}
+
+.calendar-shift-tag {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  width: 100% !important;
+  border-radius: 6px !important;
+  padding: 2px 8px !important;
+  box-sizing: border-box !important;
+
+  white-space: normal !important;   /* permite “mañana” inteiro */
+  overflow: visible !important;     /* não corta o conteúdo */
+  text-overflow: clip !important;   /* sem "..." */
+}
+
+.shift-tag-label {
+  font-size: 0.70rem !important;
+  font-weight: 600 !important;
+  text-align: left !important;
+}
+
+.shift-tag-time {
+  font-size: 0.60rem !important;
+  text-align: left !important;
+  margin-top: 0 !important;
+  opacity: 0.85 !important;
+}
+ 
     * {
       box-sizing: border-box;
       font-family: system-ui, sans-serif;
